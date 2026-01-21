@@ -20,11 +20,44 @@ public:
     void setDamage(int newDamage) { damage = newDamage; }
 };
 
+class Health {
+protected:
+    int m_health;
+public:
+
+    Health(int t_health) : m_health(t_health) {}
+
+    void reduceHealth(int t_delta)
+    {
+        m_health -= t_delta;
+
+        if (m_health < 0)
+        {
+            m_health = 0;
+        }
+    }
+
+    void increaseHealth(int t_delta)
+    {
+        m_health += t_delta;
+
+        if (m_health < 0)
+        {
+            m_health = 0;
+        }
+    }
+
+    int getHealth() const
+    {
+        return m_health;
+    }
+};
+
 
 class Character {
 protected:
     std::string name;
-    int health;
+    Health health;
     Weapon* currentWeapon;
     int strength; // multiplier for weapon damage
 
@@ -45,15 +78,17 @@ public:
 
     std::string getName() const { return name; }
     
-    int getHealth() const { return health; }
-
-    void setHealth(int newHealth) { health = newHealth; }
+    int getHealth() const { return health.getHealth(); }
 
     void takeDamage(int damage) {
-        health -= damage;
-        if (health < 0) health = 0;
-        
-        std::cout << name << "take damage " << damage << "\n";
+        health.reduceHealth(damage);
+        std::cout << name << "take damage: " << damage << "\n";
+    }
+
+    void getHealed(int t_healAmount)
+    {
+        health.increaseHealth(t_healAmount);
+        std::cout << name << "healed health: " << t_healAmount << "\n";
     }
 
     int getDamage() const
@@ -174,7 +209,7 @@ public:
 
     void healPlayer(int amount) {
         if (player.getHealth() > 0) {
-            player.setHealth(player.getHealth() + amount);
+            player.getHealed(amount);
             std::cout << "Player healed by " << amount << " points.\n";
         }
     }
