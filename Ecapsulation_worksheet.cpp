@@ -25,9 +25,10 @@ class Character {
 protected:
     std::string name;
     int health;
+    int strength; // multiplier for weapon damage
 
 public:
-    int strength; // multiplier for weapon damage
+    
     
 	Character(const std::string& characterName, int characterHealth, int characterStrength)
         : name(characterName), health(characterHealth), 
@@ -52,6 +53,8 @@ public:
         std::cout << name << "take damage " << damage << "\n";
     }
 
+
+    int getStrength() const { return strength; };
 };
 
 class Player : public Character {
@@ -93,11 +96,11 @@ public:
 
             if (playerWeapon != nullptr && enemyWeapon != nullptr) {
                 std::cout << player.getName() << " attacks " << enemy.getName() << " with " << playerWeapon->getName() << "\n";
-				enemy.takeDamage(playerWeapon->getDamage() * player.strength);
+				enemy.takeDamage(playerWeapon->getDamage() * player.getStrength());
                 std::cout << enemy.getName() << " health: " << enemy.getHealth() << "\n";
 
                 std::cout << enemy.getName() << " attacks " << player.getName() << " with " << enemyWeapon->getName() << "\n";
-                player.takeDamage(enemyWeapon->getDamage() * enemy.strength);
+                player.takeDamage(enemyWeapon->getDamage() * enemy.getStrength());
                 std::cout << player.getName() << " health: " << player.getHealth() << "\n";
             }
             else {
