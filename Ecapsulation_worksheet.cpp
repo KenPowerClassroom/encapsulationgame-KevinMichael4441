@@ -47,6 +47,18 @@ public:
         }
     }
 
+    bool isItStillThere() const
+    {
+        if (m_health <= 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     int getHealth() const
     {
         return m_health;
@@ -78,7 +90,7 @@ public:
 
     std::string getName() const { return name; }
     
-    int getHealth() const { return health.getHealth(); }
+    bool isAlive() const { return health.isItStillThere(); }
 
     void takeDamage(int damage) {
         health.reduceHealth(damage);
@@ -103,6 +115,7 @@ public:
     }
 
     int getStrength() const { return strength; };
+    int getHealth() const { return health.getHealth(); };
 };
 
 class Player : public Character {
@@ -138,7 +151,7 @@ public:
         std::cout << "Game started: " << player.getName() << " vs " << enemy.getName() << "\n";
 
         // Player and enemy health checks
-        while (player.getHealth() > 0 && enemy.getHealth() > 0) {
+        while (player.isAlive() && enemy.isAlive()) {
             Weapon* playerWeapon = player.getWeapon();
             Weapon * enemyWeapon = enemy.getWeapon();
 
@@ -168,14 +181,15 @@ public:
 
 
         
-        if (player.getHealth() <= 0) {
+        if (!player.isAlive()) {
             std::cout << player.getName() << " has been defeated.\n";
             return 1;
         }
-        else if (enemy.getHealth() <= 0) {
+        else if (!enemy.isAlive()) {
             std::cout << enemy.getName() << " has been defeated.\n";
             return 0;
         }
+
     }
 
     void equipPlayerWeapon(int weaponIndex) {
@@ -208,7 +222,7 @@ public:
     }
 
     void healPlayer(int amount) {
-        if (player.getHealth() > 0) {
+        if (player.isAlive()) {
             player.getHealed(amount);
             std::cout << "Player healed by " << amount << " points.\n";
         }
