@@ -1,7 +1,7 @@
 ```mermaid
 classDiagram
   class Shape {
-
+    <<interface>>
     draw(win:Window)
     rotate(angle:float)
   }
